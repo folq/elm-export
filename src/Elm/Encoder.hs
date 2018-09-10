@@ -120,12 +120,12 @@ renderEnumeration c = render c
 
 instance HasEncoder ElmValue where
   render (ElmField name value) = do
-    fieldModifier <- asks fieldLabelModifier
-    let modName = fieldModifier name
+    fieldLabelModifier' <- asks fieldLabelModifier
+    fieldValueModifier' <- asks fieldValueModifier
     valueBody <- render value
     return . spaceparens $
-      dquotes (stext modName) <> comma <+>
-      (valueBody <+> "x." <> stext modName)
+      dquotes (stext (fieldLabelModifier' name)) <> comma <+>
+      (valueBody <+> "x." <> stext (fieldValueModifier' name))
   render (ElmPrimitiveRef primitive) = renderRef primitive
   render (ElmRef name) = pure $ "encode" <> stext name
   render (Values x y) = do
