@@ -43,6 +43,14 @@ data Comment = Comment
   , tags :: Map String Int
   } deriving (Generic, ElmType)
 
+data Daily = Daily
+  { words :: Text
+  , day :: Day
+  , days :: [Day]
+  , maybeDay :: Maybe Day
+  , nested :: Daily
+  } deriving (Generic, ElmType)
+
 data Position
   = Beginning
   | Middle
@@ -120,6 +128,21 @@ toElmTypeSpec =
         defaultOptions
         (Proxy :: Proxy Comment)
         "test/CommentType.elm"
+    it "toElmTypeSource Daily" $
+      shouldMatchTypeSource
+        (unlines
+           [ "module DailyType exposing (..)"
+           , ""
+           , "import Date exposing (Date)"
+           , ""
+           , ""
+           , "type alias Day = Date"
+           , ""
+           , "%s"
+           ])
+        defaultOptions
+        (Proxy :: Proxy Daily)
+        "test/DailyType.elm"
     it "toElmTypeSource Position" $
       shouldMatchTypeSource
         (unlines ["module PositionType exposing (..)", "", "", "%s"])
@@ -239,6 +262,24 @@ toElmDecoderSpec =
         defaultOptions
         (Proxy :: Proxy Comment)
         "test/CommentDecoder.elm"
+    it "toElmDecoderSource Daily" $
+      shouldMatchDecoderSource
+        (unlines
+           [ "module DailyDecoder exposing (..)"
+           , ""
+           , "import DailyType exposing (..)"
+           , "import Json.Decode exposing (..)"
+           , "import Exts.Json.Decode exposing (..)"
+           , ""
+           , ""
+           , "decodeDay : Decoder Day"
+           , "decodeDay = decodeDate"
+           , ""
+           , "%s"
+           ])
+        defaultOptions
+        (Proxy :: Proxy Daily)
+        "test/DailyDecoder.elm"
     it "toElmDecoderSource Post" $
       shouldMatchDecoderSource
         (unlines
@@ -423,6 +464,24 @@ toElmEncoderSpec =
         defaultOptions
         (Proxy :: Proxy Comment)
         "test/CommentEncoder.elm"
+    it "toElmEncoderSource Daily" $
+      shouldMatchEncoderSource
+        (unlines
+           [ "module DailyEncoder exposing (..)"
+           , ""
+           , "import DailyType exposing (..)"
+           , "import Date exposing (Date)"
+           , "import Json.Encode"
+           , ""
+           , ""
+           , "encodeDay : String -> Day"
+           , "encodeDay = Date.Format.format \"%%Y-%%m-%%d\""
+           , ""
+           , "%s"
+           ])
+        defaultOptions
+        (Proxy :: Proxy Daily)
+        "test/DailyEncoder.elm"
     it "toElmEncoderSource Post" $
       shouldMatchEncoderSource
         (unlines

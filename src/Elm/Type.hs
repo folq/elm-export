@@ -140,7 +140,7 @@ instance ElmType Text where
   toElmType _ = ElmPrimitive EString
 
 instance ElmType Day where
-  toElmType _ = ElmPrimitive EDate
+  toElmType _ = ElmDatatype "Day" $ NamedConstructor "Day" $ ElmEmpty
 
 instance ElmType UTCTime where
   toElmType _ = ElmPrimitive EDate
