@@ -474,8 +474,8 @@ toElmEncoderSpec =
            , "import Json.Encode"
            , ""
            , ""
-           , "encodeDay : String -> Day"
-           , "encodeDay = Date.Format.format \"%%Y-%%m-%%d\""
+           , "encodeDay : Day -> Json.Encode.Value"
+           , "encodeDay = Json.Encode.string << Date.Format.format \"%%Y-%%m-%%d\""
            , ""
            , "%s"
            ])

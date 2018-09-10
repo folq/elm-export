@@ -5,8 +5,8 @@ import Date exposing (Date)
 import Json.Encode
 
 
-encodeDay : String -> Day
-encodeDay = Date.Format.format "%Y-%m-%d"
+encodeDay : Day -> Json.Encode.Value
+encodeDay = Json.Encode.string << Date.Format.format "%Y-%m-%d"
 
 encodeDaily : Daily -> Json.Encode.Value
 encodeDaily x =
