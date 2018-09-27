@@ -10,7 +10,6 @@ import Data.Char
 import Data.Int
 import Data.IntMap
 import Data.Map
-import Data.Monoid
 import Data.Proxy
 import Data.Text hiding (head, lines, unlines)
 import Data.Time

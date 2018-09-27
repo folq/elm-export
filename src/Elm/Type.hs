@@ -16,7 +16,6 @@ import Data.Text hiding (all)
 import Data.Time
 import GHC.Generics
 import Prelude
-import Servant.API (Headers(getResponse))
 
 data ElmDatatype
   = ElmDatatype Text
