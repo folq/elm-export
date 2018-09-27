@@ -17,7 +17,6 @@ extra-source-files:
 - test/*.elm
 dependencies:
 - base
-- bytestring
 - containers
 - text
 - time
@@ -32,7 +31,6 @@ library:
   - directory
   - formatting
   - mtl
-  - servant
   - wl-pprint-text
 
 tests:
@@ -46,8 +44,6 @@ tests:
     dependencies:
     - Diff
     - HUnit
-    - QuickCheck
     - elm-export
     - hspec
     - hspec-core
-    - quickcheck-instances
