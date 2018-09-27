@@ -208,8 +208,3 @@ isEnumeration :: ElmConstructor -> Bool
 isEnumeration (NamedConstructor _ ElmEmpty) = True
 isEnumeration (MultipleConstructors cs) = all isEnumeration cs
 isEnumeration _ = False
-
--- We define this instance here because it is an orphan otherwise.
-
-instance ElmType a => ElmType (Headers headers a) where
-   toElmType = toElmType . getResponse
