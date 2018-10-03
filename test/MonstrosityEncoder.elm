@@ -22,5 +22,5 @@ encodeMonstrosity x =
         Ridiculous y0 y1 y2 ->
             Json.Encode.object
                 [ ( "tag", Json.Encode.string "Ridiculous" )
-                , ( "contents", Json.Encode.list [ Json.Encode.int y0, Json.Encode.string y1, (Json.Encode.list << List.map encodeMonstrosity) y2 ] )
+                , ( "contents", Json.Encode.list [ Json.Encode.int y0, Json.Encode.string y1, (Json.Encode.list encodeMonstrosity) y2 ] )
                 ]

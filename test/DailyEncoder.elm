@@ -13,7 +13,7 @@ encodeDaily x =
     Json.Encode.object
         [ ( "words", Json.Encode.string x.words )
         , ( "day", encodeDay x.day )
-        , ( "days", (Json.Encode.list << List.map encodeDay) x.days )
+        , ( "days", (Json.Encode.list encodeDay) x.days )
         , ( "maybeDay", (Maybe.withDefault Json.Encode.null << Maybe.map encodeDay) x.maybeDay )
         , ( "nested", encodeDaily x.nested )
         ]

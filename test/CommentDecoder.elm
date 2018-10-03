@@ -12,7 +12,7 @@ decodeComment =
     decode Comment
         |> required "postId" int
         |> required "text" string
-        |> required "mainCategories" (map2 (,) (index 0 string) (index 1 string))
+        |> required "mainCategories" (map2 Tuple.pair (index 0 string) (index 1 string))
         |> required "published" bool
         |> required "created" decodeDate
         |> required "tags" (dict int)
