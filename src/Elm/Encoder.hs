@@ -36,10 +36,10 @@ instance HasEncoderRef ElmDatatype where
 instance HasEncoder ElmConstructor where
   -- Single constructor, no values: empty array
   render (NamedConstructor _name ElmEmpty) =
-    return $ "Json.Encode.list []"
+    return $ "Json.Encode.list (always Json.Encode.null) []"
 
   render (NamedConstructor _name (ElmPrimitiveRef EUnit)) =
-    return $ "Json.Encode.list []"
+    return $ "Json.Encode.list (always Json.Encode.null) []"
 
   -- Single constructor, multiple values: create array with values
   render (NamedConstructor name value@(Values _ _)) = do
@@ -49,7 +49,7 @@ instance HasEncoder ElmConstructor where
 
     let cs = stext name <+> foldl1 (<+>) ps <+> "->"
     return . nest 4 $ "case x of" <$$>
-      (nest 4 $ cs <$$> nest 4 ("Json.Encode.list" <$$> "[" <+> dv <$$> "]"))
+      (nest 4 $ cs <$$> nest 4 ("Json.Encode.list identity" <$$> "[" <+> dv <$$> "]"))
 
   -- Single constructor, one value: skip constructor and render just the value
   render (NamedConstructor name value) = do
@@ -89,7 +89,7 @@ renderSum (NamedConstructor name value) = do
   let ps = constructorParameters 0 value
 
   (dc, _) <- renderVariable ps value
-  let dc' = if length ps > 1 then "Json.Encode.list" <+> squarebracks dc else dc
+  let dc' = if length ps > 1 then "Json.Encode.list identity" <+> squarebracks dc else dc
   let cs = stext name <+> foldl1 (<+>) ps <+> "->"
   let tag = pair (dquotes "tag") ("Json.Encode.string" <+> dquotes (stext name))
   let ct = comma <+> pair (dquotes "contents") dc'
@@ -153,7 +153,7 @@ instance HasEncoderRef ElmPrimitive where
     dx <- renderRef x
     dy <- renderRef y
     require "Exts.Json.Encode"
-    return . parens $ "Exts.Json.Encode.tuple2" <+> dx <+> dy
+    return . parens $ "\\(first_, second_) -> Json.Encode.list identity" <+> list [dx <+> "first_", dy <+> "second_"]
   renderRef (EDict k v) = do
     dk <- renderRef k
     dv <- renderRef v
