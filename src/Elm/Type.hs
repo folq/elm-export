@@ -11,6 +11,7 @@ import Data.Int (Int16, Int32, Int64, Int8)
 import Data.IntMap
 import Data.Map
 import Data.Proxy
+import Data.Set
 import Data.Text hiding (all)
 import Data.Time
 import GHC.Generics
@@ -32,6 +33,7 @@ data ElmPrimitive
   | EString
   | EUnit
   | EList ElmDatatype
+  | ESet ElmDatatype
   | EMaybe ElmDatatype
   | ETuple2 ElmDatatype
             ElmDatatype
@@ -127,6 +129,10 @@ instance ElmType a =>
 instance ElmType a =>
          ElmType [a] where
   toElmType _ = ElmPrimitive (EList (toElmType (Proxy :: Proxy a)))
+
+instance ElmType a =>
+         ElmType (Set a) where
+  toElmType _ = ElmPrimitive (ESet (toElmType (Proxy :: Proxy a)))
 
 instance ElmType a =>
          ElmType (Maybe a) where

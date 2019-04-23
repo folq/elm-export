@@ -121,6 +121,10 @@ instance HasDecoderRef ElmPrimitive where
   renderRef (EList datatype) = do
     dt <- renderRef datatype
     return . parens $ "list" <+> dt
+  renderRef (ESet datatype) = do
+    require "Set"
+    dt <- renderRef datatype
+    return . parens $ "map Set.fromList" <+> parens ("list" <+> dt)
   renderRef (EDict EString value) = do
     require "Dict"
     d <- renderRef value
